@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployments-with-taints-tolerations
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gpu-app-with-taints-tolerations
+  template:
+    metadata:
+      labels:
+        app: gpu-app-with-taints-tolerations
+    spec:
+      tolerations:
+      - key: "gpu"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80

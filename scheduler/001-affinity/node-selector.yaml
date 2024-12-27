@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-nodeselector
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-with-nodeselector
+  template:
+    metadata:
+      labels:
+        app: nginx-with-nodeselector
+    spec:
+      nodeSelector:
+        zone: b
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80

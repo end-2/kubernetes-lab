@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployments-with-topology-spread-constraints
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx-with-topology-spread-constraints
+  template:
+    metadata:
+      labels:
+        app: nginx-with-topology-spread-constraints
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: nginx-with-topology-spread-constraints
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80

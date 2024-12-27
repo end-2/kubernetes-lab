@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-nodename
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-with-nodename
+  template:
+    metadata:
+      labels:
+        app: nginx-with-nodename
+    spec:
+      nodeName: 3z-6n-worker5
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80

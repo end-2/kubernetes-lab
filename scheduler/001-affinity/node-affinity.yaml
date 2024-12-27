@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-node-affinity
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-with-node-affinity
+  template:
+    metadata:
+      labels:
+        app: nginx-with-node-affinity
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: zone
+                operator: In
+                values:
+                - a
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80

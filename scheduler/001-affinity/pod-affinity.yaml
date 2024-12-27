@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-pod-affinity
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-with-pod-affinity
+  template:
+    metadata:
+      labels:
+        app: nginx-with-pod-affinity
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - backend
+            topologyKey: kubernetes.io/hostname
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - nginx-with-pod-affinity
+              topologyKey: kubernetes.io/hostname
+      containers:
+      - name: nginx
+        image: nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: nginx
+        ports:
+        - containerPort: 80
