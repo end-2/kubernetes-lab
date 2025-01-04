@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-pod-graceful-shutdown
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-with-pod-graceful-shutdown
+  template:
+    metadata:
+      labels:
+        app: nginx-with-pod-graceful-shutdown
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: nginx
+        image: nginx:1.27.3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'Pod is going to be terminated' && sleep 120"]
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 1
+          timeoutSeconds: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 1
+          timeoutSeconds: 1
+          failureThreshold: 3

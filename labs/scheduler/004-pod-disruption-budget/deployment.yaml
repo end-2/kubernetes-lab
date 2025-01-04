@@ -1,13 +1,3 @@
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: pdb-example
-spec:
-  selector:
-    matchLabels:
-      app: nginx-with-pdb
-  minAvailable: 2
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,6 +14,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx
+        image: nginx:1.27.3
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80

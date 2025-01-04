@@ -21,6 +21,7 @@ spec:
             app: nginx-with-topology-spread-constraints
       containers:
       - name: nginx
-        image: nginx
+        image: nginx:1.27.3
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80

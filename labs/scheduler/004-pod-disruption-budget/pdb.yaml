@@ -1,0 +1,9 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pdb-example
+spec:
+  selector:
+    matchLabels:
+      app: nginx-with-pdb
+  minAvailable: 2

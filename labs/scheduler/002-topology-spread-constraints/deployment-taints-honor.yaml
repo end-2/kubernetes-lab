@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployments-with-topology-spread-constraints-honor-taint
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx-with-topology-spread-constraints-honor-taint
+  template:
+    metadata:
+      labels:
+        app: nginx-with-topology-spread-constraints-honor-taint
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: nginx-with-topology-spread-constraints-honor-taint
+        nodeTaintsPolicy: Honor
+      containers:
+      - name: nginx
+        image: nginx:1.27.3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80

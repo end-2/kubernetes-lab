@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-with-pod-prestop
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx-with-pod-prestop
+  ports:
+    - protocol: TCP
+      port: 80

@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-pod-sidecar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-with-pod-sidecar
+  template:
+    metadata:
+      labels:
+        app: nginx-with-pod-sidecar
+    spec:
+      terminationGracePeriodSeconds: 60
+      initContainers:
+      - name: nginx-sidecar
+        restartPolicy: Always
+        image: nginx:1.27.3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: nginx-config-for-sidecar
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
+
+      containers:
+      - name: nginx
+        image: nginx:1.27.3
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'Pod is going to be terminated' && sleep 30"]
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 1
+          timeoutSeconds: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 1
+          timeoutSeconds: 1
+          failureThreshold: 3
+
+      volumes:
+      - name: nginx-config-for-sidecar
+        configMap:
+          name: nginx-config-for-sidecar
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config-for-sidecar
+data:
+  default.conf: |
+    server {
+        listen 8080;
+        server_name localhost;
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html;
+        }
+    }

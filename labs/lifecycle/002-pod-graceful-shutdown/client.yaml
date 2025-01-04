@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-test-script-with-pod-graceful-shutdown
+data:
+  nginx-test.js: |
+    import http from 'k6/http';
+    import { check, sleep } from 'k6';
+
+    export const options = {
+      vus: 10,
+      duration: '10m',
+    };
+
+    export default function () {
+      const res = http.get('http://service-with-pod-graceful-shutdown.default.svc.cluster.local');
+      check(res, {
+        'status is 200': (r) => r.status === 200,
+      });
+      sleep(1);
+    }
+---
+apiVersion: k6.io/v1alpha1
+kind: K6
+metadata:
+  name: nginx-test-with-pod-graceful-shutdown
+spec:
+  parallelism: 1
+  runner:
+    env:
+      - name: K6_PROMETHEUS_RW_SERVER_URL
+        value: http://prometheus-operated.monitoring.svc:9090/api/v1/write
+  script:
+    configMap:
+      name: nginx-test-script-with-pod-graceful-shutdown
+      file: nginx-test.js
+  arguments: -o experimental-prometheus-rw

@@ -19,6 +19,7 @@ spec:
         effect: "NoSchedule"
       containers:
       - name: nginx
-        image: nginx
+        image: nginx:1.27.3
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80

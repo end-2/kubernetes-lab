@@ -35,7 +35,8 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
       - name: nginx
-        image: nginx
+        image: nginx:1.27.3
+        imagePullPolicy: IfNotPresent
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -53,6 +54,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: nginx
+        image: nginx:1.27.3
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
