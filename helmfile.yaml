@@ -1,0 +1,15 @@
+releases:
+  - name: kube-prometheus-stack
+    namespace: monitoring
+    chart: ./helm//kube-prometheus-stack
+    values:
+      - values/kube-prometheus-stack-values.yaml
+
+  - name: k6-operator
+    namespace: k6
+    chart: ./helm/k6-operator
+    values:
+      - values/k6-operator-values.yaml
+
+helmDefaults:
+  createNamespace: true

@@ -1,0 +1,52 @@
+alertmanager:
+  alertmanagerSpec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: type
+                operator: In
+                values:
+                  - monitoring
+
+prometheusOperator:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: type
+              operator: In
+              values:
+                - monitoring
+
+prometheus:
+  prometheusSpec:
+    enableRemoteWriteReceiver: true
+    enableFeatures: 
+      - remote-write-receiver
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: type
+                operator: In
+                values:
+                  - monitoring
+
+grafana:
+  adminPassword: admin
+  service:
+    type: NodePort
+    nodePort: 30080
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: type
+              operator: In
+              values:
+                - monitoring
