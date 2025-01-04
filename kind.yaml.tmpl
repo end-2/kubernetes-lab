@@ -24,7 +24,7 @@ nodes:
     - containerPort: 30090
       hostPort: 8090
   extraMounts:
-    - hostPath: /home/{{ .Env.HOME }}/.docker/config.json
+    - hostPath: {{ .Env.HOME }}/.docker/config.json
       containerPath: /var/lib/kubelet/config.json
       readOnly: true
 - role: worker
@@ -37,7 +37,7 @@ nodes:
           register-with-taints: "gpu=true:NoSchedule"
           node-labels: "zone=a"
   extraMounts:
-    - hostPath: /home/{{ .Env.HOME }}/.docker/config.json
+    - hostPath: {{ .Env.HOME }}/.docker/config.json
       containerPath: /var/lib/kubelet/config.json
       readOnly: true
 - role: worker
@@ -50,7 +50,7 @@ nodes:
           register-with-taints: "gpu=true:NoSchedule"
           node-labels: "zone=b"
   extraMounts:
-    - hostPath: /home/{{ .Env.HOME }}/.docker/config.json
+    - hostPath: {{ .Env.HOME }}/.docker/config.json
       containerPath: /var/lib/kubelet/config.json
       readOnly: true
 - role: worker
@@ -63,7 +63,7 @@ nodes:
           register-with-taints: "gpu=true:NoSchedule"
           node-labels: "zone=c"
   extraMounts:
-    - hostPath: /home/{{ .Env.HOME }}/.docker/config.json
+    - hostPath: {{ .Env.HOME }}/.docker/config.json
       containerPath: /var/lib/kubelet/config.json
       readOnly: true
 - role: worker
@@ -75,7 +75,7 @@ nodes:
         kubeletExtraArgs:
           node-labels: "zone=a"
   extraMounts:
-    - hostPath: /home/{{ .Env.HOME }}/.docker/config.json
+    - hostPath: {{ .Env.HOME }}/.docker/config.json
       containerPath: /var/lib/kubelet/config.json
       readOnly: true
 - role: worker
@@ -87,7 +87,7 @@ nodes:
         kubeletExtraArgs:
           node-labels: "zone=b"
   extraMounts:
-    - hostPath: /home/{{ .Env.HOME }}/.docker/config.json
+    - hostPath: {{ .Env.HOME }}/.docker/config.json
       containerPath: /var/lib/kubelet/config.json
       readOnly: true
 - role: worker
@@ -99,7 +99,7 @@ nodes:
         kubeletExtraArgs:
           node-labels: "zone=c"
   extraMounts:
-    - hostPath: /home/{{ .Env.HOME }}/.docker/config.json
+    - hostPath: {{ .Env.HOME }}/.docker/config.json
       containerPath: /var/lib/kubelet/config.json
       readOnly: true
 - role: worker
@@ -111,6 +111,6 @@ nodes:
         kubeletExtraArgs:
           node-labels: "zone=f,type=monitoring"
   extraMounts:
-    - hostPath: /home/{{ .Env.HOME }}/.docker/config.json
+    - hostPath: {{ .Env.HOME }}/.docker/config.json
       containerPath: /var/lib/kubelet/config.json
       readOnly: true
