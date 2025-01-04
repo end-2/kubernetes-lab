@@ -1,0 +1,38 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: kube-prometheus-datasource
+  namespace: monitoring
+spec:
+  datasource:
+    access: proxy
+    type: prometheus
+    name: prometheus
+    url: http://kube-prometheus-stack-prometheus:9090
+    jsonData:
+      timeInterval: 5s
+      tlsSkipVerify: true
+  instanceSelector:
+    matchLabels:
+      cr/managed-by: grafana-operator
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: influxdb-datasource
+  namespace: monitoring
+spec:
+  datasource:
+    access: proxy
+    type: influxdb
+    name: influxdb
+    url: http://influxdb2
+    jsonData:
+      version: Flux
+      organization: k8slab
+      defaultBucket: local
+    secureJsonData:
+      token: admintoken
+  instanceSelector:
+    matchLabels:
+      cr/managed-by: grafana-operator

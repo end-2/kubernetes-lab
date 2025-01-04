@@ -1,3 +1,11 @@
+
+adminUser:
+  organization: "k8slab"
+  bucket: "local"
+  user: "admin"
+  password: "adminpassword"
+  token: "admintoken"
+
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:

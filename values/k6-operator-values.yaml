@@ -1,2 +1,12 @@
 namespace:
   create: false
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: type
+            operator: In
+            values:
+              - monitoring

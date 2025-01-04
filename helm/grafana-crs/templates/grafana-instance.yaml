@@ -1,0 +1,33 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+    cr/managed-by: grafana-operator
+spec:
+  config:
+    security:
+      admin_user: admin
+      admin_password: admin
+  deployment:
+    spec:
+      template:
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: type
+                      operator: In
+                      values:
+                        - monitoring
+  service:
+    spec:
+      type: NodePort
+      ports:
+        - name: http
+          port: 3000
+          targetPort: 3000
+          nodePort: 30080

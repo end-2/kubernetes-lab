@@ -37,16 +37,4 @@ prometheus:
                   - monitoring
 
 grafana:
-  adminPassword: admin
-  service:
-    type: NodePort
-    nodePort: 30080
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-            - key: type
-              operator: In
-              values:
-                - monitoring
+  enabled: false
